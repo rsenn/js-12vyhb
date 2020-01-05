@@ -1,4 +1,0 @@
-[submodule "lib"]
-	path = lib
-	url = https://github.com/rsenn/libweb.git
-	branch = master

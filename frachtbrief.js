@@ -430,14 +430,14 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
       phoneNo: "+41 79 276 01 53"
     })
   };
-
+/*
   [
     "waybill-20200105-054647-1.svg",
     "waybill-20200105-054647-2.svg",
     "waybill-20200105-054647-3.svg",
     "waybill-20200105-054647-4.svg",
     "waybill-20200105-054647-5.svg"
-  ].forEach(loadAndPush);
+  ].forEach(loadAndPush);*/
 
   async function createPrintPage() {
     const svgDivs = arr.map(str => `<div class="content"><div class="inside">$${str}</div></div>`);
