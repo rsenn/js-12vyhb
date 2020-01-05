@@ -430,7 +430,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
       phoneNo: "+41 79 276 01 53"
     })
   };
-/*
+  /*
   [
     "waybill-20200105-054647-1.svg",
     "waybill-20200105-054647-2.svg",

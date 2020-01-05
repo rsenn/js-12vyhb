@@ -5,6 +5,10 @@
     "puppeteer": "^2.0.0",
     "svg-cleaner": "0.0.4"
   },
+  "scripts": {
+    "test": "node frachtbrief.js  2>&1 | tee frachtbrief.log",
+    "run": "node frachtbrief.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
