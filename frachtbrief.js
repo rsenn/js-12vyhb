@@ -513,9 +513,15 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         }
       }
 
+      /**
+       * { function_description }
+       *
+       * @param      {string}  line    The line
+       */
       function debug(line) {
+        let found = Element.find("#debug");
         let overlay =
-          Element.find("#debug") ||
+          found ||
           Element.create(
             "div",
             {
@@ -526,26 +532,68 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
                 top: "10px",
                 width: "50vw",
                 height: "100px",
-                overflowY: "scroll",
-                padding: "4px",
-                border: "2px inset hsl(51, 91%, 50%)",
+                padding: "4px 4px 4px 4px",
+                border: "2px outset hsl(150, 30%, 50%)",
                 boxShadow: "-1px -1px  2px 1px black",
                 fontFamily: "fixed",
                 fontSize: "13",
-                backgroundColor: "hsl(51, 91%, 80%)",
+                backgroundColor: "hsl(150, 91%, 80%)",
                 zIndex: "99999",
-                borderRadius: "4px"
-              }
+                borderRadius: "4px",
+                overflowX: "hidden",
+                overflowY: "scroll"
+              },
+              children: [
+                {
+                  tagName: "div",
+                  margin: "0 0 20px 0",
+                  height: "100%",
+                  width: "100%",
+                  overflow: "auto"
+                },
+                {
+                  tagName: "input",
+                  type: "text",
+                  length: "100",
+                  value: "",
+                  style: {
+                    position: "relative",
+                    width: "100%",
+                    border: "0",
+                    outline: "none",
+                    background: "hsla(0, 0%, 100%, 0.3)"
+                  }
+                }
+              ]
             },
             document.body
           );
-
-        overlay.innerHTML += "<br />" + line.replace(/\n/g, "<br />");
-        overlay.scrollTop = overlay.scrollHeight;
+        let log = overlay.firstElementChild;
+        let input = overlay.lastElementChild;
+        function addLine(line) {
+          log.innerHTML += "<br />" + line.replace(/\n/g, "<br />");
+          overlay.scrollTop = overlay.scrollHeight;
+        }
+        if(!found) {
+          window.debug = debug;
+          debug("debug console:");
+          input.addEventListener("keydown", event => {
+            let e = event.target;
+            if(event.keyCode == 13) {
+              let result;
+              try {
+              result = window.eval(e.value);
+            } catch(err) {
+              result = `ERROR: ${err}`;
+            }
+              addLine(result);
+              e.value = "";
+            }
+            // Todo...
+          });
+        }
+        if(line) addLine(line);
       }
-      window.debug = debug;
-
-      debug("debug console:");
 
       printDigits.rect = Element.rect(Element.find(`div#digits > svg > g`));
 
