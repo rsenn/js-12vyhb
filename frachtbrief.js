@@ -601,7 +601,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         if(e.ownerSVGElement) printDigits([0, 10, 4, 5, 8], new Point(c.x + 4, c.y), e.ownerSVGElement);
       });
 
-      const signatureFields = textChildren.filter(e => /^Signature/i.test(e.innerHTML)  && !/Nom/i.test(e.innerHTML));
+      const signatureFields = textChildren.filter(e => /^Signature/i.test(e.innerHTML) && !/Nom/i.test(e.innerHTML));
       let signaturePositions = [];
 
       //  alert(signatureFields.length);
@@ -615,10 +615,11 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         let elms = getElementsAtHeight(c.x, r.y + r.width / 2, e);
         c.x += 30;
         const color = new HSLA(225, 72, 40, 1).hex();
+          const sw = (Math.random() * 0.6 + 0.3).toFixed(2);
 
         let skip = false;
         let diff = {};
-      /*  let nearest = signaturePositions.sort((a, b) => Point.distance(b, ac) - Point.distance(a, ac));
+        /*  let nearest = signaturePositions.sort((a, b) => Point.distance(b, ac) - Point.distance(a, ac));
 
         if(nearest.length) {
           alert(
@@ -644,30 +645,50 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         }*/
 
         if(!skip) {
-//          alert(diff.x + "," + diff.y);
-
           if(e.ownerSVGElement) {
             signaturePositions.push(new Point(ac));
             let sig = SVG.create("use", {
               href: `#signature-group`,
               fill: color,
               stroke: color,
-              strokeWidth: 0,
-              transform: `translate(${c.x} ${c.y}) translate(0 -24)`
+              strokeWidth: sw,
+              transform: `translate(${c.x} ${c.y}) translate(36 -24)`
             });
             e.ownerSVGElement.appendChild(sig);
           }
         }
       });
 
-      /*
-      textChildren.forEach(e => {
-        const hash = Util.hashString(e.tagName);
-        const obj = { text: 15, tspan: 60, path: 115, rect: 160 };
-        const h = obj[e.tagName.toLowerCase()];        if(h === undefined) alert(e.tagName);
-        borderBox(e, e.ownerSVGElement, null, h);
+      /* Remove adjacent duplicates */  
+      let useList = [...document.querySelectorAll("use")]
+        .sort((a, b) => a.getBoundingClientRect().y - b.getBoundingClientRect().y)
+        .map(element => ({ element, rect: element.getBoundingClientRect() }));
+      let prevRect = new DOMRect(0, 0, 0, 0);
+      let prevElement = null;
+
+      useList.forEach(entry => {
+        const { element, rect } = entry;
+        if(prevRect.x == rect.x && Math.abs(prevRect.y - rect.y) < 100) {
+          prevElement.setAttribute("style", "display: none;");
+          prevElement.setAttribute("opacity", "0");
+          prevElement.setAttribute("fill-opacity", "0");
+          prevElement.setAttribute("stroke-opacity", "0");
+        }
+        prevRect = rect;
+        prevElement = element;
       });
-*/
+
+      /*
+       textChildren.forEach(e => { const hash = Util.hashString(e.tagName);
+       const obj = { text: 15, tspan: 60, path: 115, rect: 160 }; const h =
+       obj[e.tagName.toLowerCase()];        if(h === undefined)
+       alert(e.tagName); borderBox(e, e.ownerSVGElement, null, h); });
+      
+       @param      {<type>}  child   The child
+       @param      {<type>}  parent  The parent
+       @param      {<type>}  before  The before
+       @param      {<type>}  hue     The hue
+      */
       function borderBox(child, parent, before, hue) {
         let bbox = Element.rect(child, {
           round: true,
