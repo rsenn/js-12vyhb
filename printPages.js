@@ -1,11 +1,26 @@
-async function createPrintPage(data, pages) {
+const fs = require("fs");
+
+  async function createPage(browser, url, data = "") {
+    const context = await browser.defaultBrowserContext();
+    const page = await context.newPage();
+    if(data) {
+      let buf = Buffer.from(data);
+      let encodedData = buf.toString("base64");
+      url = "data:text/html;charset=UTF-8;base64," + encodedData;
+    }
+    if(url) await page.goto(url);
+    return await page;
+  }
+
+
+async function createPrintPages(browser, data, pages) {
   const svgDivs = pages.map(str => `<div class="content"><div class="inside">$${str}</div></div>`);
   const domSrc = fs.readFileSync("./lib/dom.es5.js").toString();
   const utilSrc = fs.readFileSync("./lib/util.es5.js").toString();
   const digits = fs.readFileSync("./digits.svg").toString();
   const signature = fs.readFileSync("./unterschrift2.svg").toString();
 
-  const page = await createPage(
+  const page = await createPage(browser,
     "",
     `<!DOCTYPE html>
       <html>
@@ -379,4 +394,4 @@ async function createPrintPage(data, pages) {
   //console.log("arr:", arr);
 }
 
-module.exports = createPrintPage;
+module.exports = createPrintPages;
