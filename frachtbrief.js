@@ -652,6 +652,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
               href: `#signature-group`,
               fill: color,
               stroke: color,
+              strokeWidth: 0,
               transform: `translate(${c.x} ${c.y}) translate(0 -24)`
             });
             e.ownerSVGElement.appendChild(sig);
