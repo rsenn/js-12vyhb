@@ -516,24 +516,32 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
       function debug(line) {
         let overlay =
           Element.find("#debug") ||
-          Element.create("div", {
-            id: "debug",
-            style: {
-              position: "fixed",
-              left: "10px",
-              top: "10px",
-              width: "50vw",
-              height: "100px",
-              overflowY: "scroll",
-              padding: "2px",
-              border: "1px dashed black",
-              boxShadow: "0 0 2px black",
-              fontFamily: "fixed",
-              backgroundColor: 'hsl(51, 91%, 80%)'
-            }
-          }, document.body);
+          Element.create(
+            "div",
+            {
+              id: "debug",
+              style: {
+                position: "fixed",
+                left: "10px",
+                top: "10px",
+                width: "50vw",
+                height: "100px",
+                overflowY: "scroll",
+                padding: "4px",
+                border: "2px inset hsl(51, 91%, 50%)",
+                boxShadow: "-1px -1px  2px 1px black",
+                fontFamily: "fixed",
+                fontSize: "13",
+                backgroundColor: "hsl(51, 91%, 80%)",
+                zIndex: "99999",
+                borderRadius: "4px"
+              }
+            },
+            document.body
+          );
 
         overlay.innerHTML += "<br />" + line.replace(/\n/g, "<br />");
+        overlay.scrollTop = overlay.scrollHeight;
       }
       window.debug = debug;
 
