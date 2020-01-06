@@ -66,23 +66,6 @@
 			}
 		},
 		{
-			"file": "frachtbrief.js",
-			"settings":
-			{
-				"buffer_size": 34990,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "lib/dom.es5.js",
-			"settings":
-			{
-				"buffer_size": 98312,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "unterschrift2.svg",
 			"settings":
 			{
@@ -92,36 +75,11 @@
 			}
 		},
 		{
-			"file": "unterschrift2-neu.svg",
+			"file": "frachtbrief.js",
 			"settings":
 			{
-				"buffer_size": 5489,
+				"buffer_size": 35037,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "unterschrift1.svg",
-			"settings":
-			{
-				"buffer_size": 9704,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "unterschrift3.svg",
-			"settings":
-			{
-				"buffer_size": 5489,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "package.json",
-			"settings":
-			{
-				"buffer_size": 629,
 				"line_ending": "Unix"
 			}
 		}
@@ -313,7 +271,12 @@
 	],
 	"file_history":
 	[
+		"/home/roman/Dokumente/frachtbrief/frachtbrief.js",
+		"/home/roman/Dokumente/frachtbrief/lib/dom.es5.js",
+		"/home/roman/Dokumente/frachtbrief/unterschrift2-neu.svg",
 		"/home/roman/Dokumente/frachtbrief/unterschrift1.svg",
+		"/home/roman/Dokumente/frachtbrief/unterschrift3.svg",
+		"/home/roman/Dokumente/frachtbrief/package.json",
 		"/home/roman/Dokumente/frachtbrief/unterschrift2.svg",
 		"/home/roman/Dokumente/lib/dom.es5.js",
 		"/home/roman/Dokumente/lib/dom.js",
@@ -435,12 +398,7 @@
 		"/home/roman/lotto/models/users.moon",
 		"/home/enki/lotto/applications/drawings.moon",
 		"/home/enki/lotto/models/drawings.moon",
-		"/home/roman/lotto/helpers/util.moon",
-		"/home/roman/lotto/test-perfectmoney.moon",
-		"/home/roman/lotto/helpers/queue.moon",
-		"/home/roman/lotto/helpers/perfectmoneysci.moon",
-		"/home/roman/lotto/helpers/validate.moon",
-		"/home/roman/lotto/helpers/string.moon"
+		"/home/roman/lotto/helpers/util.moon"
 	],
 	"find":
 	{
@@ -684,104 +642,104 @@
 									25034
 								],
 								[
-									26579,
-									26583
+									26626,
+									26630
 								],
 								[
-									26592,
-									26612
+									26639,
+									26659
 								],
 								[
-									27071,
-									27091
+									27118,
+									27138
 								],
 								[
-									27193,
-									27250
+									27240,
+									27297
 								],
 								[
-									28263,
-									28283
+									28310,
+									28330
 								],
 								[
-									28330,
-									28344
+									28377,
+									28391
 								],
 								[
-									28479,
-									28483
+									28526,
+									28530
 								],
 								[
-									28694,
-									28698
+									28741,
+									28745
 								],
 								[
-									29002,
-									29006
+									29049,
+									29053
 								],
 								[
-									29171,
-									29175
+									29218,
+									29222
 								],
 								[
-									29286,
-									29290
+									29333,
+									29337
 								],
 								[
-									29361,
-									29404
+									29408,
+									29451
 								],
 								[
-									29453,
-									29457
+									29500,
+									29504
 								],
 								[
-									29593,
-									29602
+									29640,
+									29649
 								],
 								[
-									29677,
-									29681
+									29724,
+									29728
 								],
 								[
-									29822,
-									29830
+									29869,
+									29877
 								],
 								[
-									29894,
-									29902
+									29941,
+									29949
 								],
 								[
-									30210,
-									30218
+									30257,
+									30265
 								],
 								[
-									30488,
-									30492
+									30535,
+									30539
 								],
 								[
-									30620,
-									30624
+									30667,
+									30671
 								],
 								[
-									30999,
-									31003
+									31046,
+									31050
 								],
 								[
-									31059,
-									31063
+									31106,
+									31110
 								],
 								[
-									31426,
-									31430
+									31473,
+									31477
 								],
 								[
-									31603,
-									31607
+									31650,
+									31654
 								],
 								[
-									33547,
-									33593
+									33594,
+									33640
 								]
 							],
 							"symlist":
@@ -862,85 +820,17 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 1,
-					"file": "frachtbrief.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 34990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								25372,
-								25372
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"typescript_plugin_format_options":
-							{
-								"convertTabsToSpaces": true,
-								"indentSize": 2,
-								"tabSize": 2
-							},
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 9032.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "lib/dom.es5.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 98312,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5110,
-								5110
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true,
-							"use_tab_stops": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3513.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "unterschrift2.svg",
 					"semi_transient": false,
 					"settings":
@@ -970,133 +860,38 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "unterschrift2-neu.svg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5489,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5489,
-								5489
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "unterschrift1.svg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9704,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								189,
-								189
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "unterschrift3.svg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5489,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5489,
-								5489
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 689.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "package.json",
+					"buffer": 2,
+					"file": "frachtbrief.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 629,
+						"buffer_size": 35037,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								166,
-								166
+								25712,
+								25712
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Theme - Afterglow/Prefs/Langs/npm JSON.tmLanguage",
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true,
-							"typescript_plugin_format_options":
-							{
-								"convertTabsToSpaces": true,
-								"indentSize": 2,
-								"tabSize": 2
-							}
+							"use_tab_stops": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 8580.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]

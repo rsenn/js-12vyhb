@@ -105,7 +105,7 @@ async function pdfToSVG(filename, page, plain = false) {
 
 function svgOptimize(filename) {
   return execProg(
-    `svgo --indent=2 --pretty --enable={cleanupAttrs,cleanupEnableBackground,cleanupListOfValues,cleanupNumericValues,convertColors,convertShapeToPath,convertTransform,inlineStyles,mergePaths,moveGroupAttrsToElems,prefixIds,removeComments,removeDesc,removeDoctype,removeEditorsNSData,removeEmptyAttrs,removeEmptyContainers,removeEmptyText,removeHiddenElems,removeMetadata,removeNonInheritableGroupAttrs,removeOffCanvasPaths,removeRasterImages,removeScriptElement,removeTitle,removeUnknownsAndDefaults,removeUnusedNS,removeUselessDefs,removeUselessStrokeAndFill,removeXMLProcInst,reusePaths,convertPathData,sortAttrs} -i ${singleQuoted(
+    `svgo --indent=2 --pretty --enable={cleanupAttrs,cleanupEnableBackground,cleanupListOfValues,cleanupNumericValues,convertShapeToPath,convertTransform,inlineStyles,mergePaths,prefixIds,removeComments,removeDesc,removeDoctype,removeEditorsNSData,removeEmptyAttrs,removeEmptyContainers,removeEmptyText,removeHiddenElems,removeMetadata,removeNonInheritableGroupAttrs,removeScriptElement,removeUnknownsAndDefaults,removeUnusedNS,removeUselessDefs,removeUselessStrokeAndFill,removeXMLProcInst,reusePaths,convertPathData,sortAttrs} -i ${singleQuoted(
       filename
     )}`
   );
@@ -444,18 +444,32 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
     const domSrc = fs.readFileSync("./lib/dom.es5.js").toString();
     const utilSrc = fs.readFileSync("./lib/util.es5.js").toString();
     const digits = fs.readFileSync("./digits.svg").toString();
+    const signature = fs.readFileSync("./unterschrift2.svg").toString();
 
     const page = await createPage(
       "",
-      `<!DOCTYPE html><html><head><style>html, body { width: 100vw; margin: 0px; padding: 0px; }
-      div#digits { position: fixed; opacity: 0;  }
-      div#digits > svg > path {  transform: scale(0.2,0.2); }
-        div.container { display: flex; flex-flow: column nowrap; justify-content: flex-start; align-items: center; width: 100vw; margin: 0 0 60mm 0; }
-        div.content { padding: 0; margin: 11mm 5mm 14mm 5mm; overflow: hidden; position: relative; min-width: 192mm; width: 192mm; min-height: 250mm;  height: 250mm; }
-        div.inside { position: relative; top: -18.5mm; left: -10.5mm;   min-width: 210mm; width: 210mm; min-height: 297mm;  height: 297mm;  overflow: hidden; }</style>
- <script>${utilSrc}</script>
+      `<!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          html, body { width: 100vw; margin: 0px; padding: 0px; }
+          div#digits { position: fixed; opacity: 0;  }
+          div.signature { position: absolute; z-index: 1000;  }
+          div.signature > svg { opacity: 0;  }
+          div#digits > svg > path {  transform: scale(0.2,0.2); }
+          div.container { display: flex; z-index: -1; flex-flow: column nowrap; justify-content: flex-start; align-items: center; width: 100vw; margin: 0 0 60mm 0; }
+          div.content { padding: 0; margin: 11mm 5mm 14mm 5mm; overflow: hidden; position: relative; min-width: 192mm; width: 192mm; min-height: 250mm;  height: 250mm; }
+          div.inside { position: relative; top: -18.5mm; left: -10.5mm;   min-width: 210mm; width: 210mm; min-height: 297mm;  height: 297mm;  overflow: hidden; }
+        </style>
+        <script>${utilSrc}</script>
         <script>${domSrc}</script>
-        </head><body><div id="digits">${digits}</div><div class="container">${svgDivs.join("\n")}</div></body></html>`
+      </head>
+      <body>
+        <div id="digits">${digits}</div>
+        <div class="signature">${signature}</div>
+        <div class="container">${svgDivs.join("\n")}</div>
+      </body>
+      </html>`
     );
     var c = console;
 
@@ -585,6 +599,64 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         let elms = getElementsAtHeight(c.x, r.y + r.width / 2, e);
         c.x += 30;
         if(e.ownerSVGElement) printDigits([0, 10, 4, 5, 8], new Point(c.x + 4, c.y), e.ownerSVGElement);
+      });
+
+      const signatureFields = textChildren.filter(e => /^Signature/i.test(e.innerHTML)  && !/Nom/i.test(e.innerHTML));
+      let signaturePositions = [];
+
+      //  alert(signatureFields.length);
+
+      signatureFields.forEach(e => {
+        let r = Element.rect(e, { round: true, relative_to: e.ownerSVGElement });
+        let ra = Element.rect(e, { round: true });
+        let b = Element.rect(e.ownerSVGElement, { round: true });
+        let c = r.center;
+        let ac = ra.center;
+        let elms = getElementsAtHeight(c.x, r.y + r.width / 2, e);
+        c.x += 30;
+        const color = new HSLA(225, 72, 40, 1).hex();
+
+        let skip = false;
+        let diff = {};
+      /*  let nearest = signaturePositions.sort((a, b) => Point.distance(b, ac) - Point.distance(a, ac));
+
+        if(nearest.length) {
+          alert(
+            nearest
+              .map(pt => {
+               let p =  Point.diff(ac, pt);
+                return `${p.x},${p.y}`;
+              })
+              .join("\n")
+          );
+
+          let index = 0;
+          do {
+            diff = new Point(Point.diff(nearest[index], ac));
+          } while(diff.x == 0 && diff.y == 0 && ++index < nearest.length);
+
+          if(diff.x == 0 && diff.y == 0) skip = true;
+
+          if(index == nearest.length) {
+            skip = false;
+            diff.y = diff.x = Number.MAX_SAFE_INTEGER;
+          }
+        }*/
+
+        if(!skip) {
+//          alert(diff.x + "," + diff.y);
+
+          if(e.ownerSVGElement) {
+            signaturePositions.push(new Point(ac));
+            let sig = SVG.create("use", {
+              href: `#signature-group`,
+              fill: color,
+              stroke: color,
+              transform: `translate(${c.x} ${c.y}) translate(0 -24)`
+            });
+            e.ownerSVGElement.appendChild(sig);
+          }
+        }
       });
 
       /*

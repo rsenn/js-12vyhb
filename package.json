@@ -3,7 +3,8 @@
     "node-inkscape": "0.0.1",
     "node-inkscape-promise": "0.0.3",
     "puppeteer": "^2.0.0",
-    "svg-cleaner": "0.0.4"
+    "svg-cleaner": "0.0.4",
+    "svgo": "^1.3.2"
   },
   "scripts": {
     "test": "node frachtbrief.js  2>&1 | tee frachtbrief.log",
