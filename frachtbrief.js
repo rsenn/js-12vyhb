@@ -533,15 +533,16 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
                 width: "50vw",
                 height: "100px",
                 padding: "4px 4px 4px 4px",
-                border: "2px outset hsl(150, 30%, 50%)",
+                border: "1px outset hsl(180, 30%, 50%)",
                 boxShadow: "-1px -1px  2px 1px black",
-                fontFamily: "fixed",
-                fontSize: "13",
-                backgroundColor: "hsl(150, 91%, 80%)",
+                fontFamily: "MiscFixedSC613",
+                fontSize: "11",
+                backgroundColor: "hsl(180, 91%, 80%)",
                 zIndex: "99999",
-                borderRadius: "4px",
+                borderRadius: "2px",
                 overflowX: "hidden",
-                overflowY: "scroll"
+                overflowY: "scroll",
+                transition: "opacity 1s ease-out"
               },
               children: [
                 {
@@ -561,7 +562,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
                     width: "100%",
                     border: "0",
                     outline: "none",
-                    background: "hsla(0, 0%, 100%, 0.3)"
+                    background: "hsla(0, 0%, 100%, 0.8)"
                   }
                 }
               ]
@@ -570,10 +571,12 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
           );
         let log = overlay.firstElementChild;
         let input = overlay.lastElementChild;
-        function addLine(line) {
+
+        const addLine = line => {
           log.innerHTML += "<br />" + line.replace(/\n/g, "<br />");
           overlay.scrollTop = overlay.scrollHeight;
-        }
+        };
+
         if(!found) {
           window.debug = debug;
           debug("debug console:");
@@ -581,13 +584,25 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
             let e = event.target;
             if(event.keyCode == 13) {
               let result;
-              try {
-              result = window.eval(e.value);
-            } catch(err) {
-              result = `ERROR: ${err}`;
-            }
-              addLine(result);
+              let code = e.value;
               e.value = "";
+              try {
+                result = window.eval(code);
+              } catch(err) {
+                result = `ERROR: ${err}`;
+              }
+              if(result) debug("< " + result);
+            }
+            // Todo...
+          });
+          var open = true;
+          window.addEventListener("keypress", e => {
+            if(e.key == "d") {
+              open = !open;
+              overlay.style.opacity = open ? 1.0 : 0.0;
+              overlay.style.pointerEvents = open ? "all" : "none";
+
+              //  overlay.style.display = open ? "block" : "none";
             }
             // Todo...
           });
