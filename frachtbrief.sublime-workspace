@@ -540,6 +540,10 @@
 						},
 						"selection":
 						[
+							[
+								0,
+								0
+							]
 						],
 						"settings":
 						{
@@ -837,6 +841,7 @@
 						],
 						"settings":
 						{
+							"color_scheme": "Packages/User/SchemeEditorTemp/Next (Roman).tmTheme",
 							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true,
