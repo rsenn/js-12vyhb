@@ -512,6 +512,33 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
           position.x += (digit > 9 ? 10 : 40) * scale;
         }
       }
+
+      function debug(line) {
+        let overlay =
+          Element.find("#debug") ||
+          Element.create("div", {
+            id: "debug",
+            style: {
+              position: "fixed",
+              left: "10px",
+              top: "10px",
+              width: "50vw",
+              height: "100px",
+              overflowY: "scroll",
+              padding: "2px",
+              border: "1px dashed black",
+              boxShadow: "0 0 2px black",
+              fontFamily: "fixed",
+              backgroundColor: 'hsl(51, 91%, 80%)'
+            }
+          }, document.body);
+
+        overlay.innerHTML += "<br />" + line.replace(/\n/g, "<br />");
+      }
+      window.debug = debug;
+
+      debug("debug console:");
+
       printDigits.rect = Element.rect(Element.find(`div#digits > svg > g`));
 
       //      printDigits([2, 10, 1, 10, 2, 0, 2, 0], new Point(35 + 4, 43 + 4), document.querySelectorAll("svg")[1]);
@@ -536,13 +563,13 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         return c.l > 10 && c.l < 90 && c.s < 10;
       });
 
-      // alert(greyBackgrounds.length);
+      // debug(greyBackgrounds.length);
       const svgElems = [...document.querySelectorAll("svg")];
       const svgChildren = [...document.querySelectorAll("*")].filter(
         e => !!e.ownerSVGElement && e.tagName != "defs" && e.tagName != "svg"
       );
 
-      //   alert(getDigit(1).toString());
+      //   debug(getDigit(1).toString());
 
       const textChildren = svgChildren.filter(e => e.tagName == "text" || e.tagName == "tspan" || e.tagName == "path");
       const textRects = textChildren.map(e => Element.rect(e, { round: true, relative_to: document.body }));
@@ -580,7 +607,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
 
       const dateFields = textChildren.filter(e => /^(Date|City...Date)$/i.test(e.innerHTML));
 
-      // alert('dateFields.length:'+dateFields.length);
+      // debug('dateFields.length:'+dateFields.length);
 
       dateFields.forEach(e => {
         let r = Element.rect(e, { round: true, relative_to: e.ownerSVGElement });
@@ -601,10 +628,12 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         if(e.ownerSVGElement) printDigits([0, 10, 4, 5, 8], new Point(c.x + 4, c.y), e.ownerSVGElement);
       });
 
-      const signatureFields = textChildren.filter(e => /^Signature/i.test(e.innerHTML) && !/Nom/i.test(e.innerHTML));
+      const signatureFields = textChildren.filter(
+        e => /(^Signature \/|Signature$)/.test(e.innerHTML) && !/Nom/i.test(e.innerHTML)
+      );
       let signaturePositions = [];
 
-      //  alert(signatureFields.length);
+      //  debug(signatureFields.length);
 
       signatureFields.forEach(e => {
         let r = Element.rect(e, { round: true, relative_to: e.ownerSVGElement });
@@ -615,34 +644,10 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         let elms = getElementsAtHeight(c.x, r.y + r.width / 2, e);
         c.x += 30;
         const color = new HSLA(225, 72, 40, 1).hex();
-          const sw = (Math.random() * 0.6 + 0.3).toFixed(2);
+        const sw = (Math.random() * 0.6 + 0.3).toFixed(2);
 
         let skip = false;
         let diff = {};
-        /*  let nearest = signaturePositions.sort((a, b) => Point.distance(b, ac) - Point.distance(a, ac));
-
-        if(nearest.length) {
-          alert(
-            nearest
-              .map(pt => {
-               let p =  Point.diff(ac, pt);
-                return `${p.x},${p.y}`;
-              })
-              .join("\n")
-          );
-
-          let index = 0;
-          do {
-            diff = new Point(Point.diff(nearest[index], ac));
-          } while(diff.x == 0 && diff.y == 0 && ++index < nearest.length);
-
-          if(diff.x == 0 && diff.y == 0) skip = true;
-
-          if(index == nearest.length) {
-            skip = false;
-            diff.y = diff.x = Number.MAX_SAFE_INTEGER;
-          }
-        }*/
 
         if(!skip) {
           if(e.ownerSVGElement) {
@@ -659,7 +664,8 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
         }
       });
 
-      /* Remove adjacent duplicates */  
+      /* Remove adjacent duplicates */
+
       let useList = [...document.querySelectorAll("use")]
         .sort((a, b) => a.getBoundingClientRect().y - b.getBoundingClientRect().y)
         .map(element => ({ element, rect: element.getBoundingClientRect() }));
@@ -668,11 +674,20 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
 
       useList.forEach(entry => {
         const { element, rect } = entry;
-        if(prevRect.x == rect.x && Math.abs(prevRect.y - rect.y) < 100) {
+        const yinc = Math.round(rect.y - prevRect.y);
+        debug("x: " + Math.round(rect.x) + " y: " + Math.round(rect.y) + " yinc:" + yinc);
+        const isTOS = yinc < 500 && prevRect.x < 200;
+        const isSecondLine = prevRect.x == rect.x && Math.abs(yinc) < 100;
+        if(isSecondLine || isTOS) {
           prevElement.setAttribute("style", "display: none;");
           prevElement.setAttribute("opacity", "0");
           prevElement.setAttribute("fill-opacity", "0");
           prevElement.setAttribute("stroke-opacity", "0");
+        }
+        if(isTOS) {
+          let t = element.getAttribute("transform");
+          t += " translate(-36 0)";
+          element.setAttribute("transform", t);
         }
         prevRect = rect;
         prevElement = element;
@@ -682,7 +697,7 @@ console.log(util.inspect(countries).replace(/\s+/g, " "));
        textChildren.forEach(e => { const hash = Util.hashString(e.tagName);
        const obj = { text: 15, tspan: 60, path: 115, rect: 160 }; const h =
        obj[e.tagName.toLowerCase()];        if(h === undefined)
-       alert(e.tagName); borderBox(e, e.ownerSVGElement, null, h); });
+       debug(e.tagName); borderBox(e, e.ownerSVGElement, null, h); });
       
        @param      {<type>}  child   The child
        @param      {<type>}  parent  The parent
