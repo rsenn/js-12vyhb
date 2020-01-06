@@ -236,7 +236,7 @@ class PostalAddress {
     console.log("select ", await (await selects)[1].select("1"));
     */
     await fillField('select[data-ng-model="waybill.receiver.countryIso"]', receiver.country);
-    await fillField('select[data-ng-model="waybill.weightLevel"]', Math.ceil(weight));
+    await fillField('select[data-ng-model="waybill.weightLevel"]', Math.ceil(weight + 0.5));
 
     await page.waitForSelector("#radio-product-7072");
     await page.focus("#radio-product-7072");
@@ -336,7 +336,7 @@ class PostalAddress {
         loadAndPush(p);
       });
 
-      await createPrintPage();
+      await createPrintPage({ ...data, totalWeight: weight }, arr);
     }
   };
 
@@ -380,16 +380,16 @@ class PostalAddress {
     console.log(util.inspect(countries).replace(/\s+/g, " "));*/
 
   const testData = {
-    count: 4,
-    weightPerDisc: 0.14,
+    count: 6,
+    weightPerDisc: 0.132628,
     receiver: new PostalAddress({
-      lastName: "Free Software Foundation",
-      street: "Schönhauser Allee 6/7",
+      lastName: "A Harris Tweed Weaver",
+      street: "5 Lewis St",
       // additionalAddressInfo: "Treppenhaus 2, 5. Stock",
-      zip: "10119",
-      city: "Berlin",
-      country: "Deutschland",
-      phoneNo: "+49 30 2759 5290"
+      zip: "HS1 2JF",
+      city: "Stornoway",
+      country: "Grossbritannien",
+      phoneNo: "+44 7718 898115"
     }),
     sender: new PostalAddress({
       firstName: "Piroska",
@@ -403,8 +403,8 @@ class PostalAddress {
   };
   /*  ["waybill-20200105-054647-1.svg", "waybill-20200105-054647-2.svg", "waybill-20200105-054647-3.svg", "waybill-20200105-054647-4.svg", "waybill-20200105-054647-5.svg"].forEach(loadAndPush);*/
 
-  async function createPrintPage() {
-    const svgDivs = arr.map(str => `<div class="content"><div class="inside">$${str}</div></div>`);
+  async function createPrintPage(data, pages) {
+    const svgDivs = pages.map(str => `<div class="content"><div class="inside">$${str}</div></div>`);
     const domSrc = fs.readFileSync("./lib/dom.es5.js").toString();
     const utilSrc = fs.readFileSync("./lib/util.es5.js").toString();
     const digits = fs.readFileSync("./digits.svg").toString();
@@ -427,6 +427,9 @@ class PostalAddress {
         </style>
         <script>${utilSrc}</script>
         <script>${domSrc}</script>
+        <script>
+            var totalWeight = ${data.totalWeight};
+        </script>
       </head>
       <body>
         <div id="digits">${digits}</div>
@@ -437,7 +440,7 @@ class PostalAddress {
     );
     var c = console;
 
-    await page.evaluate(c => {
+    await page.evaluate(data => {
       function getDigit(n) {
         let num = n > 9 ? 10 : n >= 1 ? n - 1 : 9;
         const path = document.querySelectorAll(`div#digits > svg > g > path`)[num];
@@ -657,7 +660,15 @@ class PostalAddress {
         let c = r.center;
         let elms = getElementsAtHeight(c.x, r.y + r.width / 2, e);
         c.x += 30;
-        if(e.ownerSVGElement) printDigits([0, 10, 4, 5, 8], new Point(c.x + 4, c.y), e.ownerSVGElement);
+
+        let digits = (totalWeight || data.totalWeight)
+          .toFixed(3)
+          .split("")
+          .map(ch => (ch == "." ? 10 : parseInt(ch)));
+
+        if(digits[0] == 10) digits.unshift(0);
+
+        if(e.ownerSVGElement) printDigits(digits, new Point(c.x + 4, c.y), e.ownerSVGElement);
       });
 
       const signatureFields = textChildren.filter(
@@ -768,7 +779,7 @@ class PostalAddress {
         e.setAttribute("fill", "hsla(80, 100%, 80%, 0)");
         borderBox(e, e.parentElement, e.nextElementSibling);
       });*/
-    }, console.log);
+    }, data);
 
     //console.log("arr:", arr);
   }
